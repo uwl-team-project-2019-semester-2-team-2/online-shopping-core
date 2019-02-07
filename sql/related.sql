@@ -1,0 +1,1 @@
+SELECT * FROM product WHERE product_line_id LIKE (SELECT product_line_id FROM product WHERE id LIKE 1) AND id NOT LIKE 1;
