@@ -1,10 +1,10 @@
-package online_shopping_core
+package main
 
 import (
-	"./services"
 	"database/sql"
 	"github.com/go-sql-driver/mysql"
 	"github.com/monzo/typhon"
+	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/services"
 	"golang.org/x/net/context"
 	"log"
 	"os"
