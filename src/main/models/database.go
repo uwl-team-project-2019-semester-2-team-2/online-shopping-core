@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	_"github.com/go-sql-driver/mysql"
 	"fmt"
 )
 
@@ -19,4 +18,3 @@ func (d *Database) Init() {
 
 	d.DB = db
 }
-

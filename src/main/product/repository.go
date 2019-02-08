@@ -3,8 +3,6 @@ package product
 import (
 	"../models"
 	"database/sql"
-	_"github.com/go-sql-driver/mysql"
-	_"log"
 )
 
 type Repository struct {
@@ -12,7 +10,7 @@ type Repository struct {
 }
 
 func NewProductRepository(db *sql.DB) *Repository {
-	return &Repository{db }
+	return &Repository{db}
 }
 
 func (r *Repository) Brands() []models.Brand {
@@ -42,7 +40,7 @@ func (r *Repository) Search(term string) ([]models.Search, error) {
 	query := `SELECT id, name FROM product_line WHERE name LIKE '%' || ? || '%';`
 
 	rows, err := r.Connection.Query(query, term)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -51,10 +49,10 @@ func (r *Repository) Search(term string) ([]models.Search, error) {
 
 	for rows.Next() {
 		var search models.Search
-		
+
 		err = rows.Scan(
-			&search.Id, 
-			&search.Name, 
+			&search.Id,
+			&search.Name,
 		)
 
 		if err != nil {
@@ -69,13 +67,13 @@ func (r *Repository) Search(term string) ([]models.Search, error) {
 
 func (r *Repository) related(productID string) ([]models.Related, error) {
 	var relatedList []models.Related
-	
+
 	var productLineId int
-	
+
 	query := "SELECT product_line_id FROM product WHERE id LIKE ?;"
 
 	r.Connection.QueryRow(query, productID).Scan(&productLineId)
-	
+
 	rows, err := r.Connection.Query(`
 		SELECT id, colour FROM product 
 			WHERE product_line_id LIKE ? AND id NOT LIKE ?;
@@ -132,7 +130,7 @@ func (r *Repository) product(productID string) (models.Product, error) {
 					ON product_line.brand_id = brand.id 
 				WHERE product.id LIKE ? 
 				LIMIT 1;`
-				
+
 	rows, err := r.Connection.Query(query, productID)
 	var product models.Product
 
