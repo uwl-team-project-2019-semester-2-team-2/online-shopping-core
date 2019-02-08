@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("mysql", "jj:ranger@/shop")
+	db, err := sql.Open("mysql", "test:test@/shop")
 
 	if err != nil {
 		fmt.Print(err)
