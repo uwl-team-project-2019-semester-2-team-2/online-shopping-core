@@ -1,21 +1,34 @@
 package main
 
 import (
+	_ "./models"
 	"./product"
 	"database/sql"
-	_"github.com/go-sql-driver/mysql"
-	_"./models"
+	"github.com/go-chi/chi"
+	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
-	"github.com/go-chi/chi"
-	"fmt"
 )
 
 func main() {
-	db, err := sql.Open("mysql", "test:test@/shop")
+	mysqlConfig := &mysql.Config{
+		User:                 "",
+		Passwd:               "",
+		Addr:                 "127.0.0.1",
+		AllowNativePasswords: true,
+	}
+
+	db, err := sql.Open("mysql", mysqlConfig.FormatDSN())
 
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
+	}
+
+	err = db.Ping()
+
+	if err != nil {
+		panic(err)
 	}
 
 	prd := product.Init(db)
