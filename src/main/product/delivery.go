@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 )
 
-type ProductController struct {
-	Repository *ProductRepository
+// type ProductController struct {
+// 	Repository *ProductRepository
 	
-}
+// }
 
 func (controller *ProductController) product(w http.ResponseWriter, r *http.Request) {
 	productID := r.Context().Value("productID")

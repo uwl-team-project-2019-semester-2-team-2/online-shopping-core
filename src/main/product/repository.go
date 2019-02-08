@@ -39,10 +39,6 @@ func (pr *ProductRepository) Brands() []models.Brand {
 	return brands
 }
 
-func (pr *ProductRepository) GetByID(id string) models.Product {
-
-}
-
 func (pr *ProductRepository) related(productID string) []models.Related {
 	var relatedList []models.Related
 	
@@ -125,10 +121,4 @@ func (pr *ProductRepository) product(productID string) models.Product {
 	product.Stock = pr.stock(productID)
 	product.Related = pr.related(productID)
 	return product
-}
-
-func parseProduct(row *sql.Row) models.Product {
-
-
-
 }

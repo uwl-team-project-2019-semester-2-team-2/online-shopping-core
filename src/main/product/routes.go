@@ -10,7 +10,6 @@ import (
 
 type ProductController struct {
 	Repository *ProductRepository
-	
 }
 
 func Init(db *sql.DB) ProductController {
