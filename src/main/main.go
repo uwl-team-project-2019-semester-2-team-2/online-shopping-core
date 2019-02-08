@@ -12,12 +12,10 @@ import (
 )
 
 func main() {
-	mysqlConfig := &mysql.Config{
-		User:                 "",
-		Passwd:               "",
-		Addr:                 "127.0.0.1",
-		AllowNativePasswords: true,
-	}
+	mysqlConfig := mysql.NewConfig()
+	mysqlConfig.User = ""
+	mysqlConfig.Passwd = ""
+	mysqlConfig.Addr = "127.0.0.1"
 
 	db, err := sql.Open("mysql", mysqlConfig.FormatDSN())
 
