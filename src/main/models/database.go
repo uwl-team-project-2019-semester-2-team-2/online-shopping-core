@@ -11,7 +11,7 @@ type Database struct {
 }
 
 func (d *Database) Init() {
-	db, err := sql.Open("mysql", "jj:ranger@localhost:3306/shop")
+	db, err := sql.Open("mysql", "test:test@localhost:3306/shop")
 
 	if err != nil {
 		fmt.Print(err)
