@@ -1,0 +1,1 @@
+SELECT * FROM product_line WHERE name LIKE "%nike%";

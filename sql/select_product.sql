@@ -1,4 +1,4 @@
-SELECT product.id, product_line.id, product_line.name, product.colour, brand.name AS brand_name, product_line.description
+SELECT product.id, product_line.id AS product_line_id, product_line.name, product.colour, brand.name AS brand_name, product_line.description
 	FROM product
 		INNER JOIN product_line 
 			ON product.product_line_id = product_line.id

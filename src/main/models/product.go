@@ -31,3 +31,8 @@ type Stock struct {
 	Size string			`json:"size"`
 	Quantity int		`json:"stock"`
 }
+
+type Search struct {
+	Id int 				`json:"id"`
+	Name string			`json:"name"`
+}
