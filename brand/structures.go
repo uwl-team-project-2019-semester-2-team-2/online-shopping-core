@@ -1,8 +1,4 @@
-package services
-
-/**
-Structures
-*/
+package brand
 
 type Brand struct {
 	Id          int    `json:"id"`

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"github.com/go-sql-driver/mysql"
 	"github.com/monzo/typhon"
-	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/services"
+	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/product"
 	"golang.org/x/net/context"
 	"log"
 	"os"
@@ -32,13 +32,13 @@ func main() {
 		panic("Unable to connect to database: " + err.Error())
 	}
 
-	router := typhon.Router{}
-	router.GET("/product/:productId", services.GetProduct)
+	router := &typhon.Router{}
+	product.Routes(router)
 
 	startServer(router)
 }
 
-func startServer(router typhon.Router) {
+func startServer(router *typhon.Router) {
 	svc := router.Serve().
 		Filter(typhon.ErrorFilter).
 		Filter(typhon.H2cFilter)
