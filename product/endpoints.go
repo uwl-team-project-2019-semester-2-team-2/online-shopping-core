@@ -36,21 +36,21 @@ func (pr *Product) Get(r typhon.Request) typhon.Response {
 	prod, err := pr.Repository.product(productIdStr)
 
 	if err != nil {
-		response.Error = terrors.InternalService("Database Error", err.Error(), nil)
+		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
 	stock, err := pr.Repository.stock(productIdStr)
 
 	if err != nil {
-		response.Error = terrors.InternalService("Database Error", err.Error(), nil)
+		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
 	related, err := pr.Repository.related(productIdStr, strconv.Itoa(prod.ProductLineId))
 
 	if err != nil {
-		response.Error = terrors.InternalService("Database Error", err.Error(), nil)
+		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 

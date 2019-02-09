@@ -8,22 +8,22 @@ import (
 	"log"
 )
 
-type Handler struct {
+type Search struct {
 	Repository *Repository
 }
 
 func Init(database database.Database, router *typhon.Router) {
 	repo := Repository{&database}
-	prod := Handler{&repo}
+	prod := Search{&repo}
 	prod.Routes(router)
 }
 
-func (pr *Handler) Routes(router *typhon.Router) {
+func (pr *Search) Routes(router *typhon.Router) {
 	router.GET("/search/:searchQuery", pr.Get)
 }
 
 
-func (pr *Handler) Get(r typhon.Request) typhon.Response {
+func (pr *Search) Get(r typhon.Request) typhon.Response {
 	response := typhon.NewResponse(r)
 	searchQuery, ok := typhon.RouterForRequest(r).Params(r)["searchQuery"]
 	log.Print(fmt.Sprintf("processing get request for product %s", searchQuery))
@@ -36,7 +36,7 @@ func (pr *Handler) Get(r typhon.Request) typhon.Response {
 	searches, err := pr.Repository.search(searchQuery)
 
 	if err != nil {
-		response.Error = terrors.InternalService("Database Error", err.Error(), nil)
+		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
