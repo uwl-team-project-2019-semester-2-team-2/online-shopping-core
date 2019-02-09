@@ -9,11 +9,11 @@ type Product struct {
 	Id          int         `json:"id"`
 	Name        string      `json:"name"`
 	Brand       brand.Brand `json:"brand"`
-	Colour      string      `json:"colour"`
 	Description string      `json:"description"`
 	Variants    []struct {
 		Id       string `json:"id"`
 		Title    string `json:"title"`
+		Colour   string `json:"colour"`
 		Quantity uint32 `json:"quantity"`
 		Stock    []struct {
 			Id string `json:"id"`

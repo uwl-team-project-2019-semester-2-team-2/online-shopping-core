@@ -1,0 +1,19 @@
+PUT http://127.0.0.1:8080/product
+Content-Type: application/json
+
+{
+  "name": "iPad",
+  "brand": {
+    "Name": "Apple, Inc.",
+    "Description": "Apple"
+  },
+  "Description": "Tablet computer",
+  "Variants": [
+    {
+      "Id": "ipad5,1",
+      "Title": "iPad Pro",
+      "Colour": "Space Grey",
+      "Quantity": null
+    }
+  ]
+}
