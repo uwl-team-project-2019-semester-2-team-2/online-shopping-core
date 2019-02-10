@@ -22,7 +22,6 @@ func (pr *Search) Routes(router *typhon.Router) {
 	router.GET("/search/:searchQuery", pr.Get)
 }
 
-
 func (pr *Search) Get(r typhon.Request) typhon.Response {
 	response := typhon.NewResponse(r)
 	searchQuery, ok := typhon.RouterForRequest(r).Params(r)["searchQuery"]

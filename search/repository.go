@@ -18,7 +18,7 @@ func (r *Repository) search(term string) ([]model.Search, error) {
 				ORDER BY product.id
     			LIMIT 0,25;`
 
-	if err := r.Database.Get("%" + term + "%", &searches, query); err != nil {
+	if err := r.Database.Get("%"+term+"%", &searches, query); err != nil {
 		return nil, err
 	}
 

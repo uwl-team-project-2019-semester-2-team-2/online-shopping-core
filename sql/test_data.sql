@@ -20,3 +20,6 @@ INSERT INTO stock (product_id, size, quantity) VALUES (2, "9", 12);
 INSERT INTO stock (product_id, size, quantity) VALUES (2, "10", 15);
 INSERT INTO stock (product_id, size, quantity) VALUES (2, "11", 1);
 INSERT INTO stock (product_id, size, quantity) VALUES (2, "12", 6);
+
+INSERT INTO customer (first_name, second_name, email_address, phone_number) VALUES ("Sebastian", "Mills", "SebastianMills@jourrapide.com", "07922930005");
+INSERT INTO address (customer_id, address_line_1, address_line_2, town_city, county, post_code) VALUES (1, "542 Tom Brook", "", "Lake Layla", "Lancastershire", "LA8 9RA");
