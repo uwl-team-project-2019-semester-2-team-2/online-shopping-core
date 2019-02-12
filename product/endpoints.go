@@ -1,10 +1,10 @@
 package product
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/monzo/terrors"
 	"github.com/monzo/typhon"
+	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/database"
 	"log"
 	"strconv"
 )
@@ -15,42 +15,41 @@ func Routes(router *typhon.Router) {
 }
 
 func Get(r typhon.Request) typhon.Response {
-	response := typhon.NewResponse(r)
-
 	productIdStr, ok := typhon.RouterForRequest(r).Params(r)["productId"]
 	productId, err := strconv.ParseInt(productIdStr, 10, 32)
 
 	if err != nil {
 		log.Print("error parsing productId: " + err.Error())
-		response.Error = terrors.InternalService("", "error parsing product id", map[string]string{
+		return r.Response(terrors.InternalService("", "error parsing product id", map[string]string{
 			"error": err.Error(),
-		})
-		return response
+		}))
 	}
 
 	if !ok {
-		response.Error = terrors.InternalService("missing_parameter", "ProductID parameter missing in request", nil)
-		return response
+		return r.Response(terrors.InternalService("missing_parameter", "ProductID parameter missing in request", nil))
 	}
 
 	log.Print(fmt.Sprintf("processing get request for product %d", productId))
 
-	return typhon.NewResponse(r)
+	result := database.DB.QueryRow("SELECT product.id, line.name, line.description FROM product LEFT JOIN product_line line ON (product.product_line_id = line.id) WHERE product.id=?", productId)
+
+	product := Product{}
+	err = result.Scan(&product.Id, &product.Name, &product.Description)
+
+	if err != nil {
+		return r.Response(terrors.NotFound("product_not_found", "The requested product could not be found.", map[string]string{
+			"error": err.Error(),
+		}))
+	}
+
+	return r.Response(product)
 }
 
 func Put(r typhon.Request) typhon.Response {
-	productBytes, err := r.BodyBytes(true)
-
-	if err != nil {
-		log.Println("error reading body bytes: " + err.Error())
-		return r.Response(err)
-	}
-
 	newProduct := &Product{}
-	err = json.Unmarshal(productBytes, newProduct)
+	err := r.Decode(newProduct)
 
 	if err != nil {
-		log.Println("error unmarshalling json body: " + err.Error())
 		return r.Response(err)
 	}
 

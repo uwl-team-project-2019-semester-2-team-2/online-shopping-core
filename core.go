@@ -15,8 +15,7 @@ func StartServer() (*typhon.Server, error) {
 		return nil, errors.New("unable to start server: " + err.Error())
 	}
 
-	svc := getRouter().Serve().
-		Filter(typhon.ErrorFilter)
+	svc := getRouter().Serve().Filter(typhon.H2cFilter).Filter(typhon.ErrorFilter)
 	srv, err := typhon.Listen(svc, ":8080")
 	if err != nil {
 		return nil, errors.New("unable to start server: " + err.Error())
@@ -26,9 +25,9 @@ func StartServer() (*typhon.Server, error) {
 	return srv, nil
 }
 
-func getRouter() *typhon.Router {
-	router := &typhon.Router{}
-	product.Routes(router)
+func getRouter() typhon.Router {
+	router := typhon.Router{}
+	product.Routes(&router)
 
 	return router
 }

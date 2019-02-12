@@ -6,11 +6,19 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-type DB struct {
+var (
+	DB *DBType
+)
+
+type DBType struct {
 	db *sql.DB
 }
 
-func OpenMysql(user, password, addr, dbName string) (*DB, error) {
+func (db *DBType) QueryRow(query string, args ...interface{}) *sql.Row {
+	return db.db.QueryRow(query, args...)
+}
+
+func OpenMysql(user, password, addr, dbName string) (*DBType, error) {
 	mysqlConfig := mysql.NewConfig()
 	mysqlConfig.User = user
 	mysqlConfig.Passwd = password
@@ -27,7 +35,9 @@ func OpenMysql(user, password, addr, dbName string) (*DB, error) {
 		return nil, errors.New("unable to open database connection:" + err.Error())
 	}
 
-	return &DB{
+	DB = &DBType{
 		db: db,
-	}, nil
+	}
+
+	return DB, nil
 }

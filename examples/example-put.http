@@ -1,5 +1,6 @@
 PUT http://127.0.0.1:8080/product
 Content-Type: application/json
+Accept: application/json
 
 {
   "name": "iPad",
@@ -17,3 +18,5 @@ Content-Type: application/json
     }
   ]
 }
+
+###
