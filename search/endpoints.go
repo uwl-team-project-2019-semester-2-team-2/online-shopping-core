@@ -6,6 +6,7 @@ import (
 	"github.com/monzo/typhon"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/database"
 	"log"
+	"strconv"
 )
 
 type Search struct {
@@ -25,6 +26,14 @@ func (pr *Search) Routes(router *typhon.Router) {
 func (pr *Search) Get(r typhon.Request) typhon.Response {
 	response := typhon.NewResponse(r)
 	searchQuery, ok := typhon.RouterForRequest(r).Params(r)["searchQuery"]
+	q := r.URL.Query()
+
+	page, err := strconv.Atoi(q.Get("page"))
+
+	if err != nil {
+		page = 1
+	}
+
 	log.Print(fmt.Sprintf("processing get request for product %s", searchQuery))
 
 	if !ok {
@@ -32,12 +41,24 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	searches, err := pr.Repository.search(searchQuery)
+	searches, err := pr.Repository.search(searchQuery, page)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
-	return r.Response(searches)
+	count, err := pr.Repository.count(searchQuery)
+
+	if err != nil {
+		response.Error = terrors.InternalService("database_error", err.Error(), nil)
+		return response
+	}
+
+	var marshaller = Marshaller{
+		Count: count,
+		SearchProducts: searches,
+	}
+
+	return r.Response(marshaller)
 }

@@ -1,25 +1,18 @@
-INSERT INTO brand (name, description) VALUES ("Nike", "");
+INSERT INTO department (name) VALUES ("Fresh & Chilled");
+INSERT INTO department (name) VALUES ("Bakery");
+INSERT INTO department (name) VALUES ("Frozen");
+INSERT INTO department (name) VALUES ("Beer, Wine & Spirits");
+INSERT INTO department (name) VALUES ("Household");
+INSERT INTO department (name) VALUES ("Toiletries");
+INSERT INTO department (name) VALUES ("Health & Medicine");
+INSERT INTO department (name) VALUES ("Pet");
+INSERT INTO department (name) VALUES ("Drinks");
+INSERT INTO department (name) VALUES ("New");
 
-INSERT INTO product_line (name, brand_id, description) VALUES ("Nike Air Max 90", 1, "The Nike Air Max 90 released in 1990 and is considered to be the second flagship sneaker of the Air Max legacy. The most popular colorway is the 'Infrared', which was the original colorway in 1990. The Air Max 90 was designed by legendary Nike architect Tinker Hatfield.");
-INSERT INTO product (product_line_id, colour) VALUES (1, "Black/White");
+INSERT INTO brand (name, description) VALUES ("The Happy Egg Co.", "");
+INSERT INTO product (name, brand_id, price, item_quantity, item_quantity_postfix, description) VALUES ("The Happy Egg Co. 6 Free Range Eggs Medium", 1, 1.30, 6, " per pack", "");
+INSERT INTO product (name, brand_id, price, item_quantity, item_quantity_postfix, description) VALUES ("The Happy Egg Co. 12 Free Range Eggs Large", 1, 2.70, 12, " per pack", "");
 
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "6", 10);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "7", 3);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "8", 12);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "9", 16);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "10", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "11", 2);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "12", 0);
-
-
-INSERT INTO product (product_line_id, colour) VALUES (1, "Grey");
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "6", 13);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "7", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "8", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "9", 12);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "10", 15);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "11", 1);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "12", 6);
 
 INSERT INTO customer (first_name, second_name, email_address, phone_number) VALUES ("Sebastian", "Mills", "SebastianMills@jourrapide.com", "07922930005");
 INSERT INTO address (customer_id, address_line_1, address_line_2, town_city, county, post_code) VALUES (1, "542 Tom Brook", "", "Lake Layla", "Lancastershire", "LA8 9RA");

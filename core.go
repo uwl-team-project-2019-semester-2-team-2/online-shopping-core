@@ -5,6 +5,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/monzo/typhon"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/database"
+	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/department"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/product"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/search"
 	"log"
@@ -40,5 +41,6 @@ func initModules(db database.Database) *typhon.Router {
 	router := &typhon.Router{}
 	product.Init(db, router)
 	search.Init(db, router)
+	department.Init(db, router)
 	return router
 }

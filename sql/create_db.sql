@@ -1,3 +1,11 @@
+CREATE TABLE department (
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(30),
+	parent_id INT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (parent_id) REFERENCES department (id)
+);
+
 CREATE TABLE brand (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
@@ -5,21 +13,16 @@ CREATE TABLE brand (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE product_line (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255),
-    brand_id INT,
-    description VARCHAR(5000),
-    PRIMARY KEY (id),
-    FOREIGN KEY (brand_id) REFERENCES brand (id)
-);
-
 CREATE TABLE product (
     id INT NOT NULL AUTO_INCREMENT,
-    product_line_id INT,
-    colour VARCHAR(255),
+    name VARCHAR(60),
+    brand_id INT,
+	price DECIMAL(13, 2),
+    item_quantity INT,
+    item_quantity_postfix VARCHAR(10),
+	description VARCHAR(5000),
     PRIMARY KEY (id),
-    FOREIGN KEY (product_line_id) REFERENCES product_line (id)
+    FOREIGN KEY (brand_id) REFERENCES brand (id)
 );
 
 CREATE TABLE stock (
@@ -78,4 +81,14 @@ CREATE TABLE order_items (
 	PRIMARY KEY (id),
 	FOREIGN KEY (order_id) REFERENCES orders (id),
 	FOREIGN KEY (product_id) REFERENCES product (id)
-)
+);
+
+CREATE TABLE basket (
+	id INT NOT NULL AUTO_INCREMENT,
+    customer_id INT,
+    product_id INT,
+    quantity INT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (product_id) REFERENCES product (id),
+	FOREIGN KEY (customer_id) REFERENCES customer (id)
+);

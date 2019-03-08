@@ -32,7 +32,21 @@ func (db *Database) Get(id string, dest interface{}, query string) error {
 	return nil
 }
 
+func (db *Database) Count(id string, dest *int, query string) error {
+	if err := db.Connection.Get(dest, query, id); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (db *Database) List(dest interface{}, query string) error {
+	if err := db.Connection.Select(dest, query); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *Database) Paginate(dest interface{}, query string, page int, perPage int) error {
 	if err := db.Connection.Select(dest, query); err != nil {
 		return err
 	}
