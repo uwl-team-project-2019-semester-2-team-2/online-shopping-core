@@ -25,15 +25,16 @@ func (r *Repository) count(term string) (int, error) {
 func (r *Repository) search(term string, page int) ([]model.Search, error) {
 	perPage := 25
 	upperRange := page * perPage
-	lowerRange := strconv.Itoa(upperRange - perPage)
+	lowerRange := upperRange - perPage
 
 	var searches []model.Search
 	query := `SELECT product.id, product.name, product.price, product.item_quantity, product.item_quantity_postfix FROM product
 				WHERE product.name LIKE ?
 				ORDER BY product.id
-    			LIMIT ` + lowerRange + `, ` + strconv.Itoa(upperRange) + `;`
+    			LIMIT ` + strconv.Itoa(lowerRange) + `, ` + strconv.Itoa(upperRange) + `;`
 
-	if err := r.Database.Get("%"+term+"%", &searches, query); err != nil {
+
+	if err := r.Database.GetSlice(&searches, query, "%"+term+"%"); err != nil {
 		return nil, err
 	}
 

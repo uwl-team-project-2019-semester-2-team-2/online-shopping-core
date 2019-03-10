@@ -25,6 +25,14 @@ CREATE TABLE product (
     FOREIGN KEY (brand_id) REFERENCES brand (id)
 );
 
+CREATE TABLE product_image (
+	id INT NOT NULL AUTO_INCREMENT,
+    product_id INT,
+    url VARCHAR(255),
+	PRIMARY KEY (id),
+    FOREIGN KEY (product_id) REFERENCES product (id)
+);
+
 CREATE TABLE stock (
     id INT NOT NULL AUTO_INCREMENT,
     product_id INT,

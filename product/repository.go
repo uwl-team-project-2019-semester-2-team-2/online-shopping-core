@@ -14,7 +14,7 @@ func (r *Repository) related(productId string, productLineId string) ([]model.Re
 	var relatedList []model.Related
 	query := fmt.Sprintf(`SELECT id, colour FROM product WHERE product_line_id LIKE ? AND id NOT LIKE "%s";`, productId)
 
-	if err := r.Database.Get(productLineId, &relatedList, query); err != nil {
+	if err := r.Database.Get(&relatedList, query, productLineId); err != nil {
 		return nil, err
 	}
 
@@ -25,27 +25,36 @@ func (r *Repository) stock(productID string) ([]model.Stock, error) {
 	var sizes []model.Stock
 	query := `SELECT size, quantity FROM stock WHERE stock.product_id like ? ORDER BY ABS(size) ASC;`
 
-	if err := r.Database.Get(productID, &sizes, query); err != nil {
+	if err := r.Database.Get(&sizes, query, productID); err != nil {
 		return nil, err
 	}
 
 	return sizes, nil
 }
 
-func (r *Repository) product(productID string) (model.Product, error) {
-	var products []model.Product
-	query := `SELECT product.id, product_line.id AS product_line_id, product_line.name AS product_line_name,
-				product.colour, brand.name AS brand_name, product_line.description FROM product
-				INNER JOIN product_line
-					ON product.product_line_id = product_line.id 
-				INNER JOIN brand 
-					ON product_line.brand_id = brand.id 
-				WHERE product.id LIKE ? 
-				LIMIT 1;`
+func (r *Repository) pictures(productID string) ([]model.Picture, error) {
+	var pictures []model.Picture
 
-	if err := r.Database.Get(productID, &products, query); err != nil {
+	query := `SELECT product_image.url FROM product_image 
+				WHERE product_image.product_id LIKE ?`
+
+	if err := r.Database.Get(&pictures, query, productID); err != nil {
+		return nil, err
+	}
+
+	return pictures, nil
+}
+
+func (r *Repository) product(productID string) (model.Product, error) {
+	var products model.Product
+	query := `SELECT product.id, product.name, brand.name AS brand_name, product.description FROM product
+				INNER JOIN brand 
+					ON product.brand_id = brand.id 
+				WHERE product.id LIKE ?;`
+
+	if err := r.Database.GetOne(productID, &products, query); err != nil {
 		return model.Product{}, err
 	}
 
-	return products[0], nil
+	return products, nil
 }

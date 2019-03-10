@@ -25,8 +25,22 @@ func Connect(conf *mysql.Config) (Database, error) {
 	return Database{db}, nil
 }
 
-func (db *Database) Get(id string, dest interface{}, query string) error {
+func (db *Database) Get(dest interface{}, query string, id string) error {
 	if err := db.Connection.Select(dest, query, id); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *Database) GetOne(id string, dest interface{}, query string) error {
+	if err := db.Connection.Get(dest, query, id); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (db *Database) GetSlice(dest interface{}, query string, args ...interface{}) error {
+	if err := db.Connection.Select(dest, query, args...); err != nil {
 		return err
 	}
 	return nil

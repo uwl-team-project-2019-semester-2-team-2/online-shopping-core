@@ -6,7 +6,6 @@ import (
 	"github.com/monzo/typhon"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/database"
 	"log"
-	"strconv"
 )
 
 type Product struct {
@@ -40,22 +39,14 @@ func (pr *Product) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	stock, err := pr.Repository.stock(productIdStr)
+	pictures, err := pr.Repository.pictures(productIdStr)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
-	related, err := pr.Repository.related(productIdStr, strconv.Itoa(prod.ProductLineId))
-
-	if err != nil {
-		response.Error = terrors.InternalService("database_error", err.Error(), nil)
-		return response
-	}
-
-	prod.Stock = stock
-	prod.Related = related
+	prod.Pictures = pictures
 
 	log.Print(fmt.Sprintf("processing get request for product %s", productIdStr))
 
