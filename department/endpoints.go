@@ -23,12 +23,46 @@ func (pr *Department) Routes(router *typhon.Router) {
 func (pr *Department) List(r typhon.Request) typhon.Response {
 	response := typhon.NewResponse(r)
 
-	dept, err := pr.Repository.departments()
+	depts, err := pr.Repository.departments()
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
-	return r.Response(dept)
+	var sortedDepts []Container
+
+	for _, dept := range depts {
+		if dept.ParentId == 0 {
+			parentDept := Container {
+				Id: dept.Id,
+				Name: dept.Name,
+				URL: dept.URL,
+				Children: buildDepartment(dept.Id, depts),
+			}
+
+			sortedDepts = append(sortedDepts, parentDept)
+		}
+	}
+
+	return r.Response(sortedDepts)
+}
+
+func buildDepartment(id int, departments []Container) []Container {
+
+	var childDepts []Container
+
+	for _, dept := range departments {
+		if dept.ParentId == id {
+			childDept := Container {
+				Id: dept.Id,
+				Name: dept.Name,
+				URL: dept.URL,
+				Children: buildDepartment(dept.Id, departments),
+			}
+			childDepts = append(childDepts, childDept)
+		}
+	}
+
+	return childDepts
 }

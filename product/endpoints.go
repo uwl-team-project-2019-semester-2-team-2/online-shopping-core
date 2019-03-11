@@ -46,7 +46,13 @@ func (pr *Product) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
+	packInfo := PackInfo {
+		Quantity: prod.ItemQuantity,
+		Postfix: prod.Postfix,
+	}
+
 	prod.Pictures = pictures
+	prod.PackInfo = packInfo
 
 	log.Print(fmt.Sprintf("processing get request for product %s", productIdStr))
 

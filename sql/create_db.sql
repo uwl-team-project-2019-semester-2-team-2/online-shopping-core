@@ -2,8 +2,15 @@ CREATE TABLE department (
 	id INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(30),
 	parent_id INT,
-	PRIMARY KEY (id),
-	FOREIGN KEY (parent_id) REFERENCES department (id)
+    url VARCHAR(30),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE dietary (
+	id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30),
+    url VARCHAR(30),
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE brand (
@@ -17,12 +24,22 @@ CREATE TABLE product (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(60),
     brand_id INT,
+    department_id INT,
 	price DECIMAL(13, 2),
     item_quantity INT,
     item_quantity_postfix VARCHAR(10),
 	description VARCHAR(5000),
     PRIMARY KEY (id),
-    FOREIGN KEY (brand_id) REFERENCES brand (id)
+    FOREIGN KEY (brand_id) REFERENCES brand (id),
+    FOREIGN KEY (department_id) REFERENCES department (id));
+
+CREATE TABLE product_dietary (
+	id INT NOT NULL AUTO_INCREMENT,
+    product_id INT,
+    dietary_id INT,
+	PRIMARY KEY (id),
+    FOREIGN KEY (product_id) REFERENCES product (id),
+    FOREIGN KEY (dietary_id) REFERENCES dietary (id)
 );
 
 CREATE TABLE product_image (
@@ -33,21 +50,13 @@ CREATE TABLE product_image (
     FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
-CREATE TABLE stock (
-    id INT NOT NULL AUTO_INCREMENT,
-    product_id INT,
-    size VARCHAR(255),
-    quantity INT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (product_id) REFERENCES product (id)
-);
-
-CREATE TABLE pictures (
-    id INT NOT NULL AUTO_INCREMENT,
-    url VARCHAR(255),
-    product_id INT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (product_id) REFERENCES product (id)
+CREATE TABLE product_image_cover (
+	product_id INT,
+    product_image_id INT,
+    PRIMARY KEY (product_id, product_image_id),
+	UNIQUE (product_id, product_image_id),
+	FOREIGN KEY (product_id) REFERENCES product (id),
+    FOREIGN KEY (product_image_id) REFERENCES product_image (id)
 );
 
 CREATE TABLE customer (

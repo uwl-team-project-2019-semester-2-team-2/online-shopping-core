@@ -1,9 +1,9 @@
 package search
 
 import (
+	"fmt"
+	"github.com/jmoiron/sqlx"
 	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/database"
-	"github.com/uwl-team-project-2019-semester-2-team-2/online-shopping-core/model"
-	"strconv"
 )
 
 type Repository struct {
@@ -22,20 +22,71 @@ func (r *Repository) count(term string) (int, error) {
 	return quantity, nil
 }
 
-func (r *Repository) search(term string, page int) ([]model.Search, error) {
+func (r *Repository) filters() ([]DietaryFilter, error) {
+	var filters []DietaryFilter
+
+	query := `SELECT dietary.name, dietary.url FROM dietary`
+
+	if err := r.Database.GetSlice(&filters, query); err != nil {
+		return nil, err
+	}
+
+	return filters, nil
+}
+
+func (r *Repository) search(term string, page int, filters ...string) ([]DatabaseContainer, error) {
 	perPage := 25
 	upperRange := page * perPage
 	lowerRange := upperRange - perPage
 
-	var searches []model.Search
-	query := `SELECT product.id, product.name, product.price, product.item_quantity, product.item_quantity_postfix FROM product
-				WHERE product.name LIKE ?
+	var searches []DatabaseContainer
+	var query string
+
+	query = fmt.Sprintf(`SELECT
+					product.id,
+					product.name,
+					product.price,
+					product.item_quantity,
+					product.item_quantity_postfix,
+					product_image.url
+				FROM product
+    			JOIN product_image_cover ON product.id = product_image_cover.product_id
+    			JOIN product_image ON product_image_cover.product_image_id = product_image.id
+				WHERE product.name LIKE :term 
+				AND product.id NOT IN (SELECT product_dietary.product_id
+					FROM product_dietary
+					JOIN dietary ON product_dietary.dietary_id = dietary.id
+					WHERE dietary.url IN (:filters))
 				ORDER BY product.id
-    			LIMIT ` + strconv.Itoa(lowerRange) + `, ` + strconv.Itoa(upperRange) + `;`
+    			LIMIT %d, %d;`,  lowerRange, upperRange)
 
 
-	if err := r.Database.GetSlice(&searches, query, "%"+term+"%"); err != nil {
+	queryMap := map[string]interface{}{
+		"term":  "%"+term+"%",
+		"filters": filters,
+	}
+
+	if filters == nil {
+		queryMap["filters"] = "null"
+	}
+
+	query, args, err := sqlx.Named(query, queryMap)
+	query, args, err = sqlx.In(query, args...)
+	query = r.Database.Connection.Rebind(query)
+	rows, err := r.Database.Connection.Queryx(query, args...)
+
+	if err != nil {
 		return nil, err
+	}
+
+	for rows.Next() {
+		var search DatabaseContainer
+		err := rows.StructScan(&search)
+
+		searches = append(searches, search)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return searches, nil
