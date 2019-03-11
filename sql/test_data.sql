@@ -1,22 +1,34 @@
-INSERT INTO brand (name, description) VALUES ("Nike", "");
+INSERT INTO department (name, parent_id, url) VALUES ("Fresh & Chilled", 0, "fresh-chilled");
+INSERT INTO department (name, parent_id, url) VALUES ("Bakery", 0, "bakery");
+INSERT INTO department (name, parent_id, url) VALUES ("Frozen", 0, "frozen");
+INSERT INTO department (name, parent_id, url) VALUES ("Beer, Wine & Spirits", 0, "beer-wine-spirits");
+INSERT INTO department (name, parent_id, url) VALUES ("Household", 0, "household");
+INSERT INTO department (name, parent_id, url) VALUES ("Toiletries", 0, "toiletries");
+INSERT INTO department (name, parent_id, url) VALUES ("Health & Medicine", 0, "health-medicine");
+INSERT INTO department (name, parent_id, url) VALUES ("Pet", 0, "pet");
+INSERT INTO department (name, parent_id, url) VALUES ("Drinks", 0, "drinks");
+INSERT INTO department (name, parent_id, url) VALUES ("New", 0, "new");
 
-INSERT INTO product_line (name, brand_id, description) VALUES ("Nike Air Max 90", 1, "The Nike Air Max 90 released in 1990 and is considered to be the second flagship sneaker of the Air Max legacy. The most popular colorway is the 'Infrared', which was the original colorway in 1990. The Air Max 90 was designed by legendary Nike architect Tinker Hatfield.");
-INSERT INTO product (product_line_id, colour) VALUES (1, "Black/White");
+INSERT INTO department (name, parent_id, url) VALUES ("Milk, Butter & Eggs", 1, "milk-butter-eggs");
+INSERT INTO department (name, parent_id, url) VALUES ("Free Range Eggs", 11, "free-range-eggs");
 
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "6", 10);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "7", 3);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "8", 12);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "9", 16);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "10", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "11", 2);
-INSERT INTO stock (product_id, size, quantity) VALUES (1, "12", 0);
+INSERT INTO dietary (name, url, filter) VALUES ("No Egg", "eggs", true);
+INSERT INTO dietary (name, url, filter) VALUES ("No Milk", "milk", true);
+INSERT INTO dietary (name, url, filter) VALUES ("No Gluten", "gluten", true);
+INSERT INTO dietary (name, url, filter) VALUES ("Vegeterian", "vegeterian", false);
+INSERT INTO dietary (name, url, filter) VALUES ("Vegan", "vegan", false);
+INSERT INTO dietary (name, url, filter) VALUES ("Organic", "organic", false);
 
+INSERT INTO brand (name, description) VALUES ("The Happy Egg Co.", "");
+INSERT INTO product (name, brand_id, department_id, price, item_quantity, item_quantity_postfix, description) VALUES ("The Happy Egg Co. 6 Free Range Eggs Medium", 1, 11, 1.30, 6, " per pack", "");
+INSERT INTO product_image (product_id, url) VALUES (1, "/product_images/116487011_0_640x640.jpg");
+INSERT INTO product_image_cover (product_id, product_image_id) VALUES (1, 1);
+INSERT INTO product_dietary (product_id, dietary_id) VALUES (1, 1);
 
-INSERT INTO product (product_line_id, colour) VALUES (1, "Grey");
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "6", 13);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "7", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "8", 5);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "9", 12);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "10", 15);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "11", 1);
-INSERT INTO stock (product_id, size, quantity) VALUES (2, "12", 6);
+INSERT INTO product (name, brand_id, department_id, price, item_quantity, item_quantity_postfix, description) VALUES ("The Happy Egg Co. 12 Free Range Eggs Large", 1, 11, 2.70, 12, " per pack", "");
+INSERT INTO product_image (product_id, url) VALUES (2, "/product_images/394000011_0_640x640.jpg");
+INSERT INTO product_image_cover (product_id, product_image_id) VALUES (2, 2);
+INSERT INTO product_dietary (product_id, dietary_id) VALUES (2, 1);
+
+INSERT INTO customer (first_name, second_name, email_address, phone_number) VALUES ("Sebastian", "Mills", "SebastianMills@jourrapide.com", "07922930005");
+INSERT INTO address (customer_id, address_line_1, address_line_2, town_city, county, post_code) VALUES (1, "542 Tom Brook", "", "Lake Layla", "Lancastershire", "LA8 9RA");
