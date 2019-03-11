@@ -47,14 +47,18 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	var validFilters []string
+	var filterContainer UserFilters
 
 	if urlParams.Filter != "" {
 		userFilters := strings.Split(urlParams.Filter, ",")
 		for _, userFilter := range userFilters {
 			for _, filter := range filters {
 				if userFilter == filter.URL {
-					validFilters = append(validFilters, filter.URL)
+					if filter.Filter {
+						filterContainer.Exclusive = append(filterContainer.Exclusive, filter.URL)
+					} else {
+						filterContainer.Inclusive = append(filterContainer.Inclusive, filter.URL)
+					}
 				}
 			}
 		}
@@ -71,7 +75,7 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		order = "relevance"
 	}
 
-	searches, err := pr.Repository.search(searchQuery, urlParams.Page, order, validFilters...)
+	searches, err := pr.Repository.search(searchQuery, urlParams.Page, order, filterContainer)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)

@@ -25,7 +25,7 @@ func (r *Repository) count(term string) (int, error) {
 func (r *Repository) filters() ([]DietaryFilter, error) {
 	var filters []DietaryFilter
 
-	query := `SELECT dietary.name, dietary.url FROM dietary`
+	query := `SELECT dietary.name, dietary.url, dietary.filter FROM dietary`
 
 	if err := r.Database.GetSlice(&filters, query); err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (r *Repository) filters() ([]DietaryFilter, error) {
 	return filters, nil
 }
 
-func (r *Repository) search(term string, page int, order string, filters ...string) ([]DatabaseContainer, error) {
+func (r *Repository) search(term string, page int, order string, filters UserFilters) ([]DatabaseContainer, error) {
 	perPage := 25
 	upperRange := page * perPage
 	lowerRange := upperRange - perPage
@@ -43,6 +43,7 @@ func (r *Repository) search(term string, page int, order string, filters ...stri
 	var query string
 	var orderQuery string
 	var filtersQuery string
+	var inclusiveQuery string
 
 	switch order {
 	case "ascending":
@@ -53,11 +54,18 @@ func (r *Repository) search(term string, page int, order string, filters ...stri
 		orderQuery = "ORDER BY product.id DESC"
 	}
 
-	if filters != nil {
+	if filters.Exclusive != nil {
 		filtersQuery = `AND product.id NOT IN (SELECT product_dietary.product_id
 						FROM product_dietary
 						JOIN dietary ON product_dietary.dietary_id = dietary.id
-						WHERE dietary.url IN (:filters))`
+						WHERE dietary.url IN (:exclusive))`
+	}
+
+	if filters.Inclusive != nil {
+		inclusiveQuery = `AND product.id IN (SELECT product_dietary.product_id
+						FROM product_dietary
+						JOIN dietary ON product_dietary.dietary_id = dietary.id
+						WHERE dietary.url IN (:inclusive))`
 	}
 
 	query = fmt.Sprintf(`SELECT
@@ -72,12 +80,16 @@ func (r *Repository) search(term string, page int, order string, filters ...stri
     			JOIN product_image ON product_image_cover.product_image_id = product_image.id
 				WHERE product.name LIKE :term 
 				%s
+				%s
 				%s 
-    			LIMIT %d, %d;`, filtersQuery, orderQuery, lowerRange, upperRange)
+    			LIMIT %d, %d;`, inclusiveQuery, filtersQuery, orderQuery, lowerRange, upperRange)
+
+	fmt.Println(query)
 
 	queryMap := map[string]interface{}{
 		"term":  "%"+term+"%",
-		"filters": filters,
+		"exclusive": filters.Exclusive,
+		"inclusive": filters.Inclusive,
 	}
 
 	query, args, err := sqlx.Named(query, queryMap)

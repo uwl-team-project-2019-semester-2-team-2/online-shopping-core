@@ -6,6 +6,11 @@ type URLParams struct {
 	Page int `schema:"page"`
 }
 
+type UserFilters struct {
+	Inclusive              []string
+	Exclusive              []string
+}
+
 type PageInfo struct {
 	Page                    int                 `json:"page"`
 	Order                   string              `json:"order"`
@@ -14,6 +19,7 @@ type PageInfo struct {
 type DietaryFilter struct {
 	Name                    string      `json:"name" db:"name"`
 	URL                     string      `json:"url" db:"url"`
+	Filter                  bool        `json:"filter" db:"filter"`
 }
 
 type DatabaseContainer struct {

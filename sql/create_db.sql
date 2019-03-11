@@ -10,6 +10,7 @@ CREATE TABLE dietary (
 	id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30),
     url VARCHAR(30),
+    filter boolean,
     PRIMARY KEY (id)
 );
 

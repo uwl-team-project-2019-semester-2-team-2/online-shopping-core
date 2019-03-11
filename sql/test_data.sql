@@ -12,12 +12,12 @@ INSERT INTO department (name, parent_id, url) VALUES ("New", 0, "new");
 INSERT INTO department (name, parent_id, url) VALUES ("Milk, Butter & Eggs", 1, "milk-butter-eggs");
 INSERT INTO department (name, parent_id, url) VALUES ("Free Range Eggs", 11, "free-range-eggs");
 
-INSERT INTO dietary (name, url) VALUES ("No Egg", "eggs");
-INSERT INTO dietary (name, url) VALUES ("No Milk", "milk");
-INSERT INTO dietary (name, url) VALUES ("No Gluten", "gluten");
-INSERT INTO dietary (name, url) VALUES ("Vegeterian", "vegeterian");
-INSERT INTO dietary (name, url) VALUES ("Vegan", "vegan");
-INSERT INTO dietary (name, url) VALUES ("Organic", "organic");
+INSERT INTO dietary (name, url, filter) VALUES ("No Egg", "eggs", true);
+INSERT INTO dietary (name, url, filter) VALUES ("No Milk", "milk", true);
+INSERT INTO dietary (name, url, filter) VALUES ("No Gluten", "gluten", true);
+INSERT INTO dietary (name, url, filter) VALUES ("Vegeterian", "vegeterian", false);
+INSERT INTO dietary (name, url, filter) VALUES ("Vegan", "vegan", false);
+INSERT INTO dietary (name, url, filter) VALUES ("Organic", "organic", false);
 
 INSERT INTO brand (name, description) VALUES ("The Happy Egg Co.", "");
 INSERT INTO product (name, brand_id, department_id, price, item_quantity, item_quantity_postfix, description) VALUES ("The Happy Egg Co. 6 Free Range Eggs Medium", 1, 11, 1.30, 6, " per pack", "");
