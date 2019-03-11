@@ -6,6 +6,11 @@ type URLParams struct {
 	Page int `schema:"page"`
 }
 
+type PageInfo struct {
+	Page                    int                 `json:"page"`
+	Order                   string              `json:"order"`
+}
+
 type DietaryFilter struct {
 	Name                    string      `json:"name" db:"name"`
 	URL                     string      `json:"url" db:"url"`
@@ -21,7 +26,7 @@ type DatabaseContainer struct {
 }
 
 type Marshaller struct {
-	Page                    int                 `json:"page"`
+	PageInfo                PageInfo            `json:"page_info"`
 	Count                   int                 `json:"count"`
 	SearchProducts          []DatabaseContainer `json:"products"`
 	Filters					[]DietaryFilter     `json:"filters"`

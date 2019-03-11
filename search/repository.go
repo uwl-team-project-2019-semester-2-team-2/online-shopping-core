@@ -34,13 +34,31 @@ func (r *Repository) filters() ([]DietaryFilter, error) {
 	return filters, nil
 }
 
-func (r *Repository) search(term string, page int, filters ...string) ([]DatabaseContainer, error) {
+func (r *Repository) search(term string, page int, order string, filters ...string) ([]DatabaseContainer, error) {
 	perPage := 25
 	upperRange := page * perPage
 	lowerRange := upperRange - perPage
 
 	var searches []DatabaseContainer
 	var query string
+	var orderQuery string
+	var filtersQuery string
+
+	switch order {
+	case "ascending":
+		orderQuery = "ORDER BY product.price ASC"
+	case "descending":
+		orderQuery = "ORDER BY product.price DESC"
+	default:
+		orderQuery = "ORDER BY product.id DESC"
+	}
+
+	if filters != nil {
+		filtersQuery = `AND product.id NOT IN (SELECT product_dietary.product_id
+						FROM product_dietary
+						JOIN dietary ON product_dietary.dietary_id = dietary.id
+						WHERE dietary.url IN (:filters))`
+	}
 
 	query = fmt.Sprintf(`SELECT
 					product.id,
@@ -53,21 +71,13 @@ func (r *Repository) search(term string, page int, filters ...string) ([]Databas
     			JOIN product_image_cover ON product.id = product_image_cover.product_id
     			JOIN product_image ON product_image_cover.product_image_id = product_image.id
 				WHERE product.name LIKE :term 
-				AND product.id NOT IN (SELECT product_dietary.product_id
-					FROM product_dietary
-					JOIN dietary ON product_dietary.dietary_id = dietary.id
-					WHERE dietary.url IN (:filters))
-				ORDER BY product.id
-    			LIMIT %d, %d;`,  lowerRange, upperRange)
-
+				%s
+				%s 
+    			LIMIT %d, %d;`, filtersQuery, orderQuery, lowerRange, upperRange)
 
 	queryMap := map[string]interface{}{
 		"term":  "%"+term+"%",
 		"filters": filters,
-	}
-
-	if filters == nil {
-		queryMap["filters"] = "null"
 	}
 
 	query, args, err := sqlx.Named(query, queryMap)

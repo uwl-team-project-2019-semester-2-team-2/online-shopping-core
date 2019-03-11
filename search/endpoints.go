@@ -1,7 +1,6 @@
 package search
 
 import (
-	"fmt"
 	"github.com/gorilla/schema"
 	"github.com/monzo/terrors"
 	"github.com/monzo/typhon"
@@ -61,18 +60,18 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		}
 	}
 
-	if urlParams.Order != "" {
-		switch order := urlParams.Order; order {
-		case "relevance":
-			fmt.Println(order)
-		case "ascending":
-			fmt.Println(order)
-		case "descending":
-			fmt.Println(order)
-		}
+	var order string
+
+	switch urlParams.Order {
+	case "ascending":
+		order = urlParams.Order
+	case "descending":
+		order = urlParams.Order
+	default:
+		order = "relevance"
 	}
 
-	searches, err := pr.Repository.search(searchQuery, urlParams.Page, validFilters...)
+	searches, err := pr.Repository.search(searchQuery, urlParams.Page, order, validFilters...)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
@@ -86,8 +85,12 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
+
 	var marshaller = Marshaller{
-		Page: urlParams.Page,
+		PageInfo: PageInfo {
+			Page: urlParams.Page,
+			Order: order,
+		},
 		Count: count,
 		SearchProducts: searches,
 		Filters: filters,
