@@ -1,1 +1,0 @@
-package online_shopping_core
