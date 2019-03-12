@@ -1,6 +1,7 @@
 package search
 
 import (
+	_"fmt"
 	"github.com/gorilla/schema"
 	"github.com/monzo/terrors"
 	"github.com/monzo/typhon"
@@ -40,7 +41,7 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		urlParams.Page = 1
 	}
 
-	filters, err := pr.Repository.filters()
+	filters, err := pr.Repository.filterCount(searchQuery)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
@@ -82,20 +83,19 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	count, err := pr.Repository.count(searchQuery)
+	count, err := pr.Repository.count(searchQuery, filterContainer)
 
 	if err != nil {
 		response.Error = terrors.InternalService("database_error", err.Error(), nil)
 		return response
 	}
 
-
-	var marshaller = Marshaller{
+	var marshaller = Marshaller {
 		PageInfo: PageInfo {
 			Page: urlParams.Page,
 			Order: order,
+			Count: count,
 		},
-		Count: count,
 		SearchProducts: searches,
 		Filters: filters,
 	}

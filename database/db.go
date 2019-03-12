@@ -25,6 +25,59 @@ func Connect(conf *mysql.Config) (Database, error) {
 	return Database{db}, nil
 }
 
+func (db *Database) Query(query string, queryMap map[string]interface{}) (*sqlx.Rows, error) {
+
+		query, args, err := sqlx.Named(query, queryMap)
+		query, args, err = sqlx.In(query, args...)
+		query = db.Connection.Rebind(query)
+		rows, err := db.Connection.Queryx(query, args...)
+
+		if err != nil {
+			return &sqlx.Rows {}, err
+		}
+		return rows, nil
+	}
+
+//	for rows.Next() {
+//		switch reflect.Indirect(reflect.ValueOf(dest)).Kind() {
+//			case reflect.Slice:
+//				value := reflect.TypeOf(dest)
+//				t := value.Elem()
+//				vp := reflect.New(t)
+//				v := reflect.Indirect(vp)
+//
+//
+//				fmt.Println(reflect.ValueOf(v))
+//
+//				err := rows.StructScan(&v)
+//
+//				if err != nil {
+//					return err
+//				}
+//
+//				dest = append([]interface{}{dest}, v)
+//			case reflect.Int:
+//				err := rows.Scan(dest)
+//
+//				if err != nil {
+//					return err
+//				}
+//		}
+//	}
+//	return nil
+//}
+
+func (db *Database) Scan(dest interface{}, rows *sqlx.Rows) error {
+	rows.Next()
+	err := rows.Scan(dest)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (db *Database) Get(dest interface{}, query string, id string) error {
 	if err := db.Connection.Select(dest, query, id); err != nil {
 		return err

@@ -32,7 +32,8 @@ CREATE TABLE product (
 	description VARCHAR(5000),
     PRIMARY KEY (id),
     FOREIGN KEY (brand_id) REFERENCES brand (id),
-    FOREIGN KEY (department_id) REFERENCES department (id));
+    FOREIGN KEY (department_id) REFERENCES department (id)
+);
 
 CREATE TABLE product_dietary (
 	id INT NOT NULL AUTO_INCREMENT,
