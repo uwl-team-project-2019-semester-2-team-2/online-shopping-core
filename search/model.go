@@ -15,6 +15,7 @@ type PageInfo struct {
 	Page                    int                 `json:"page"`
 	Order                   string              `json:"order"`
 	Count                   int                 `json:"product_count"`
+	ActiveFilters           []string                 `json:"active_filters"`
 }
 
 type DietaryFilter struct {

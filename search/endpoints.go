@@ -49,12 +49,14 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 	}
 
 	var filterContainer UserFilters
+	var activeFilters []string
 
 	if urlParams.Filter != "" {
 		userFilters := strings.Split(urlParams.Filter, ",")
 		for _, userFilter := range userFilters {
 			for _, filter := range filters {
 				if userFilter == filter.URL {
+					activeFilters = append(activeFilters, filter.URL)
 					if filter.Filter {
 						filterContainer.Exclusive = append(filterContainer.Exclusive, filter.URL)
 					} else {
@@ -95,6 +97,7 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 			Page: urlParams.Page,
 			Order: order,
 			Count: count,
+			ActiveFilters: activeFilters,
 		},
 		SearchProducts: searches,
 		Filters: filters,
