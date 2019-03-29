@@ -13,3 +13,13 @@ DELETE  /product/<id> - todo
 GET     /search/<query>
 ```
 
+#### User
+
+#### Basket
+
+#### Admin
+
+#### Sign-in
+
+#### Register
+
