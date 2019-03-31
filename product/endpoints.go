@@ -46,9 +46,9 @@ func (pr *Product) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	packInfo := PackInfo {
+	packInfo := PackInfo{
 		Quantity: prod.ItemQuantity,
-		Postfix: prod.Postfix,
+		Postfix:  prod.Postfix,
 	}
 
 	prod.Pictures = pictures

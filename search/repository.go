@@ -14,7 +14,7 @@ func (r *Repository) count(term string, filters UserFilters) (int, error) {
 	var inclusiveQuery string
 
 	queryMap := map[string]interface{}{
-		"term": "%" + term + "%",
+		"term":      "%" + term + "%",
 		"inclusive": filters.Inclusive,
 		"exclusive": filters.Exclusive,
 	}
@@ -78,7 +78,7 @@ func (r *Repository) filterCount(term string) ([]DietaryFilter, error) {
 
 		queryMap := map[string]interface{}{
 			"term": "%" + term + "%",
-			"id": filter.Id,
+			"id":   filter.Id,
 		}
 
 		var filterQ string
@@ -159,7 +159,7 @@ func (r *Repository) search(term string, page int, order string, filters UserFil
     			LIMIT %d, %d;`, inclusiveQuery, exclusiveQuery, orderQuery, lowerRange, upperRange)
 
 	queryMap := map[string]interface{}{
-		"term":  "%"+term+"%",
+		"term":      "%" + term + "%",
 		"exclusive": filters.Exclusive,
 		"inclusive": filters.Inclusive,
 	}

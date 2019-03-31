@@ -27,16 +27,16 @@ func Connect(conf *mysql.Config) (Database, error) {
 
 func (db *Database) Query(query string, queryMap map[string]interface{}) (*sqlx.Rows, error) {
 
-		query, args, err := sqlx.Named(query, queryMap)
-		query, args, err = sqlx.In(query, args...)
-		query = db.Connection.Rebind(query)
-		rows, err := db.Connection.Queryx(query, args...)
+	query, args, err := sqlx.Named(query, queryMap)
+	query, args, err = sqlx.In(query, args...)
+	query = db.Connection.Rebind(query)
+	rows, err := db.Connection.Queryx(query, args...)
 
-		if err != nil {
-			return &sqlx.Rows {}, err
-		}
-		return rows, nil
+	if err != nil {
+		return &sqlx.Rows{}, err
 	}
+	return rows, nil
+}
 
 //	for rows.Next() {
 //		switch reflect.Indirect(reflect.ValueOf(dest)).Kind() {

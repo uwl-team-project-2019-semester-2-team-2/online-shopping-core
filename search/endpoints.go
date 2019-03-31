@@ -1,7 +1,7 @@
 package search
 
 import (
-	_"fmt"
+	_ "fmt"
 	"github.com/gorilla/schema"
 	"github.com/monzo/terrors"
 	"github.com/monzo/typhon"
@@ -92,15 +92,15 @@ func (pr *Search) Get(r typhon.Request) typhon.Response {
 		return response
 	}
 
-	var marshaller = Marshaller {
-		PageInfo: PageInfo {
-			Page: urlParams.Page,
-			Order: order,
-			Count: count,
+	var marshaller = Marshaller{
+		PageInfo: PageInfo{
+			Page:          urlParams.Page,
+			Order:         order,
+			Count:         count,
 			ActiveFilters: activeFilters,
 		},
 		SearchProducts: searches,
-		Filters: filters,
+		Filters:        filters,
 	}
 
 	return r.Response(marshaller)

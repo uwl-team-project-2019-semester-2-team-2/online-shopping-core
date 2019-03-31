@@ -34,10 +34,10 @@ func (pr *Department) List(r typhon.Request) typhon.Response {
 
 	for _, dept := range depts {
 		if dept.ParentId == 0 {
-			parentDept := Container {
-				Id: dept.Id,
-				Name: dept.Name,
-				URL: dept.URL,
+			parentDept := Container{
+				Id:       dept.Id,
+				Name:     dept.Name,
+				URL:      dept.URL,
 				Children: buildDepartment(dept.Id, depts),
 			}
 
@@ -54,10 +54,10 @@ func buildDepartment(id int, departments []Container) []Container {
 
 	for _, dept := range departments {
 		if dept.ParentId == id {
-			childDept := Container {
-				Id: dept.Id,
-				Name: dept.Name,
-				URL: dept.URL,
+			childDept := Container{
+				Id:       dept.Id,
+				Name:     dept.Name,
+				URL:      dept.URL,
 				Children: buildDepartment(dept.Id, departments),
 			}
 			childDepts = append(childDepts, childDept)
