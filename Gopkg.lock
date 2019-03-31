@@ -26,11 +26,30 @@
   version = "v1.4.1"
 
 [[projects]]
-  digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
+  digest = "1:318f1c959a8a740366fce4b1e1eb2fd914036b4af58fbd0a003349b305f118ad"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   pruneopts = "UT"
-  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
+  revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
+  version = "v1.3.1"
+
+[[projects]]
+  digest = "1:345ad428d03cc89fa5498d61383d0d7f39afbe8731ca135c0ec92782285121d3"
+  name = "github.com/gorilla/schema"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "124d17ef95858a10835ce95502446cb5a9e9f715"
+  version = "v1.1.0"
+
+[[projects]]
+  digest = "1:6c41d4f998a03b6604227ccad36edaed6126c397e5d78709ef4814a1145a6757"
+  name = "github.com/jmoiron/sqlx"
+  packages = [
+    ".",
+    "reflectx",
+  ]
+  pruneopts = "UT"
+  revision = "d161d7a76b5661016ad0b085869f77fd410f3e6a"
   version = "v1.2.0"
 
 [[projects]]
@@ -55,11 +74,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ac371e3104689315d6eda9b099091d07f557ada12d301a83cdf42afceb59050f"
+  digest = "1:e7491d57662448a4885bc48733706dd614d624fc5825c1bfba03217ad319f1f9"
   name = "github.com/monzo/typhon"
   packages = ["."]
   pruneopts = "UT"
-  revision = "0e904ef1917418ad8c1adaf62b369d9430cef81f"
+  revision = "104f25d6aab334814c84bfffff1dd352cf69b43b"
 
 [[projects]]
   branch = "master"
@@ -71,7 +90,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d8f37813c2d388c2f7aee7d36fe54f3148f93e4f1235ee8c58e742ed637d6627"
+  digest = "1:0f4dcb65ce07327f58e8f7469cd3491ae7dc35086584d9d556d7ddce87093bea"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -82,7 +101,7 @@
     "idna",
   ]
   pruneopts = "UT"
-  revision = "65e2d4e15006aab9813ff8769e768bbf4bb667a0"
+  revision = "74de082e2cca95839e88aa0aeee5aadf6ce7710f"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -112,14 +131,16 @@
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = "UT"
-  revision = "e9657d882bb81064595ca3b56cbe2546bbabf7b1"
-  version = "v1.4.0"
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/go-sql-driver/mysql",
+    "github.com/gorilla/schema",
+    "github.com/jmoiron/sqlx",
     "github.com/monzo/terrors",
     "github.com/monzo/typhon",
     "golang.org/x/net/context",
